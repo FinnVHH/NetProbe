@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "NetProbe",
+  "version": "1.1.0",
+  "description": "Security scanner, penetration testing tools, and privacy protection",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "webRequest",
+    "downloads",
+    "tabs"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  
+  "icons": {
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}

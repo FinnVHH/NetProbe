@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NetProbe</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="logo">
+          <span class="logo-icon">◉</span>
+          <h1>NetProbe</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+      <p class="current-site" id="currentSite">Loading...</p>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="website-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span>Info</span>
+      </button>
+      <button class="tab" data-tab="pentest">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+        <span>Pentest</span>
+      </button>
+      <button class="tab" data-tab="exploits">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <span>Exploits</span>
+      </button>
+      <button class="tab" data-tab="ad-blocking">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>Shield</span>
+      </button>
+      <button class="tab" data-tab="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <!-- Tab Content -->
+    <main class="tab-content">
+      <!-- Website Info Tab -->
+      <section id="website-info" class="tab-panel active">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">IP Address</span>
+              <span class="info-value" id="ipAddress">Scanning...</span>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">Hosting Provider</span>
+              <span class="info-value" id="hostingProvider">Scanning...</span>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">Server Location</span>
+              <span class="info-value" id="serverLocation">Scanning...</span>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon ssl-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <span class="info-label">SSL Certificate</span>
+              <span class="info-value" id="sslInfo">Scanning...</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="security-headers">
+          <h3>Security Headers</h3>
+          <div id="securityHeaders" class="headers-list">
+            <div class="header-item skeleton"></div>
+            <div class="header-item skeleton"></div>
+            <div class="header-item skeleton"></div>
+          </div>
+        </div>
+        
+        <button id="refreshBtn" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Refresh Scan
+        </button>
+      </section>
+
+      <!-- Penetration Testing Tab -->
+      <section id="pentest" class="tab-panel">
+        <div class="pentest-header">
+          <h3>Security Analysis</h3>
+          <span class="pentest-target" id="pentestTarget">-</span>
+        </div>
+        
+        <div class="pentest-actions">
+          <button class="pentest-btn" id="scanPorts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+              <line x1="6" y1="6" x2="6.01" y2="6"/>
+              <line x1="6" y1="18" x2="6.01" y2="18"/>
+            </svg>
+            Port Scan
+          </button>
+          <button class="pentest-btn" id="scanHeaders">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            Header Analysis
+          </button>
+          <button class="pentest-btn" id="scanTech">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+            Tech Detection
+          </button>
+          <button class="pentest-btn" id="scanSSL">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            SSL Analysis
+          </button>
+          <button class="pentest-btn" id="scanDNS">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            DNS Records
+          </button>
+          <button class="pentest-btn" id="scanWhois">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            WHOIS Lookup
+          </button>
+        </div>
+        
+        <button class="btn-primary full-scan-btn" id="fullScan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2v10l4.5 4.5"/>
+          </svg>
+          Run Full Scan
+        </button>
+        
+        <div class="pentest-results" id="pentestResults">
+          <div class="results-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <p>Select a scan to begin analysis</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Exploits Tab -->
+      <section id="exploits" class="tab-panel">
+        <div class="exploit-warning">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div>
+            <strong>Educational Purposes Only</strong>
+            <p>Only test on systems you own or have permission to test.</p>
+          </div>
+        </div>
+
+        <div class="quick-scan-section">
+          <button class="btn-primary quick-scan-btn" id="runAllTests">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            Run Quick Vulnerability Scan
+          </button>
+          <p class="quick-scan-hint">Runs XSS, SQLi, CSRF, CORS, and Information Disclosure tests</p>
+        </div>
+
+        <div class="exploit-section">
+          <h3>🔓 Injection Attacks</h3>
+          
+          <div class="exploit-card" id="xssTest">
+            <div class="exploit-info">
+              <span class="exploit-name">XSS (Cross-Site Scripting)</span>
+              <span class="exploit-desc">Test for reflected/stored XSS vulnerabilities</span>
+            </div>
+            <button class="exploit-btn" data-test="xss">Test</button>
+          </div>
+          
+          <div class="exploit-card" id="sqlTest">
+            <div class="exploit-info">
+              <span class="exploit-name">SQL Injection</span>
+              <span class="exploit-desc">Test for SQL injection points</span>
+            </div>
+            <button class="exploit-btn" data-test="sql">Test</button>
+          </div>
+          
+          <div class="exploit-card" id="nosqlTest">
+            <div class="exploit-info">
+              <span class="exploit-name">NoSQL Injection</span>
+              <span class="exploit-desc">Test for MongoDB/NoSQL injection</span>
+            </div>
+            <button class="exploit-btn" data-test="nosql">Test</button>
+          </div>
+
+          <div class="exploit-card" id="cmdTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Command Injection</span>
+              <span class="exploit-desc">Test for OS command injection</span>
+            </div>
+            <button class="exploit-btn" data-test="cmd">Test</button>
+          </div>
+
+          <div class="exploit-card" id="ldapTest">
+            <div class="exploit-info">
+              <span class="exploit-name">LDAP Injection</span>
+              <span class="exploit-desc">Test for LDAP query injection</span>
+            </div>
+            <button class="exploit-btn" data-test="ldap">Test</button>
+          </div>
+
+          <div class="exploit-card" id="xpathTest">
+            <div class="exploit-info">
+              <span class="exploit-name">XPath Injection</span>
+              <span class="exploit-desc">Test for XML path injection</span>
+            </div>
+            <button class="exploit-btn" data-test="xpath">Test</button>
+          </div>
+
+          <div class="exploit-card" id="sstiTest">
+            <div class="exploit-info">
+              <span class="exploit-name">SSTI (Server-Side Template)</span>
+              <span class="exploit-desc">Test for template injection</span>
+            </div>
+            <button class="exploit-btn" data-test="ssti">Test</button>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>🌐 Server-Side Vulnerabilities</h3>
+          
+          <div class="exploit-card" id="ssrfTest">
+            <div class="exploit-info">
+              <span class="exploit-name">SSRF (Server-Side Request)</span>
+              <span class="exploit-desc">Test for internal network access</span>
+            </div>
+            <button class="exploit-btn" data-test="ssrf">Test</button>
+          </div>
+
+          <div class="exploit-card" id="xxeTest">
+            <div class="exploit-info">
+              <span class="exploit-name">XXE (XML External Entity)</span>
+              <span class="exploit-desc">Test for XML parser vulnerabilities</span>
+            </div>
+            <button class="exploit-btn" data-test="xxe">Test</button>
+          </div>
+          
+          <div class="exploit-card" id="lfiTest">
+            <div class="exploit-info">
+              <span class="exploit-name">LFI (Local File Inclusion)</span>
+              <span class="exploit-desc">Test for path traversal vulnerabilities</span>
+            </div>
+            <button class="exploit-btn" data-test="lfi">Test</button>
+          </div>
+
+          <div class="exploit-card" id="rfiTest">
+            <div class="exploit-info">
+              <span class="exploit-name">RFI (Remote File Inclusion)</span>
+              <span class="exploit-desc">Test for remote file loading</span>
+            </div>
+            <button class="exploit-btn" data-test="rfi">Test</button>
+          </div>
+
+          <div class="exploit-card" id="rceTest">
+            <div class="exploit-info">
+              <span class="exploit-name">RCE (Remote Code Execution)</span>
+              <span class="exploit-desc">Test for code execution flaws</span>
+            </div>
+            <button class="exploit-btn" data-test="rce">Test</button>
+          </div>
+
+          <div class="exploit-card" id="deserialTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Insecure Deserialization</span>
+              <span class="exploit-desc">Test for object injection</span>
+            </div>
+            <button class="exploit-btn" data-test="deserial">Test</button>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>🔐 Authentication & Session</h3>
+          
+          <div class="exploit-card" id="csrfTest">
+            <div class="exploit-info">
+              <span class="exploit-name">CSRF (Cross-Site Request)</span>
+              <span class="exploit-desc">Test for CSRF token protection</span>
+            </div>
+            <button class="exploit-btn" data-test="csrf">Test</button>
+          </div>
+
+          <div class="exploit-card" id="jwtTest">
+            <div class="exploit-info">
+              <span class="exploit-name">JWT Vulnerabilities</span>
+              <span class="exploit-desc">Test for weak JWT implementation</span>
+            </div>
+            <button class="exploit-btn" data-test="jwt">Test</button>
+          </div>
+
+          <div class="exploit-card" id="sessionTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Session Fixation</span>
+              <span class="exploit-desc">Test for session handling flaws</span>
+            </div>
+            <button class="exploit-btn" data-test="session">Test</button>
+          </div>
+
+          <div class="exploit-card" id="bruteTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Brute Force Protection</span>
+              <span class="exploit-desc">Test for rate limiting</span>
+            </div>
+            <button class="exploit-btn" data-test="brute">Test</button>
+          </div>
+
+          <div class="exploit-card" id="enumTest">
+            <div class="exploit-info">
+              <span class="exploit-name">User Enumeration</span>
+              <span class="exploit-desc">Test for username disclosure</span>
+            </div>
+            <button class="exploit-btn" data-test="enum">Test</button>
+          </div>
+
+          <div class="exploit-card" id="weakPassTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Weak Password Policy</span>
+              <span class="exploit-desc">Test password requirements</span>
+            </div>
+            <button class="exploit-btn" data-test="weakpass">Test</button>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>🛡️ Access Control</h3>
+
+          <div class="exploit-card" id="idorTest">
+            <div class="exploit-info">
+              <span class="exploit-name">IDOR (Insecure Direct Object)</span>
+              <span class="exploit-desc">Test for access control bypass</span>
+            </div>
+            <button class="exploit-btn" data-test="idor">Test</button>
+          </div>
+
+          <div class="exploit-card" id="privescTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Privilege Escalation</span>
+              <span class="exploit-desc">Test for vertical access control</span>
+            </div>
+            <button class="exploit-btn" data-test="privesc">Test</button>
+          </div>
+          
+          <div class="exploit-card" id="openRedirectTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Open Redirect</span>
+              <span class="exploit-desc">Test for URL redirect vulnerabilities</span>
+            </div>
+            <button class="exploit-btn" data-test="redirect">Test</button>
+          </div>
+          
+          <div class="exploit-card" id="corsTest">
+            <div class="exploit-info">
+              <span class="exploit-name">CORS Misconfiguration</span>
+              <span class="exploit-desc">Test for permissive CORS policies</span>
+            </div>
+            <button class="exploit-btn" data-test="cors">Test</button>
+          </div>
+
+          <div class="exploit-card" id="clickjackTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Clickjacking</span>
+              <span class="exploit-desc">Test if site can be framed</span>
+            </div>
+            <button class="exploit-btn" data-test="clickjack">Test</button>
+          </div>
+
+          <div class="exploit-card" id="dirListTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Directory Listing</span>
+              <span class="exploit-desc">Test for exposed directories</span>
+            </div>
+            <button class="exploit-btn" data-test="dirlist">Test</button>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>☁️ Cloud & Infrastructure</h3>
+
+          <div class="exploit-card" id="s3Test">
+            <div class="exploit-info">
+              <span class="exploit-name">S3 Bucket Misconfiguration</span>
+              <span class="exploit-desc">Test for open cloud storage</span>
+            </div>
+            <button class="exploit-btn" data-test="s3">Test</button>
+          </div>
+
+          <div class="exploit-card" id="subdomainTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Subdomain Takeover</span>
+              <span class="exploit-desc">Test for dangling DNS records</span>
+            </div>
+            <button class="exploit-btn" data-test="subdomain">Test</button>
+          </div>
+
+          <div class="exploit-card" id="graphqlTest">
+            <div class="exploit-info">
+              <span class="exploit-name">GraphQL Introspection</span>
+              <span class="exploit-desc">Test for schema exposure</span>
+            </div>
+            <button class="exploit-btn" data-test="graphql">Test</button>
+          </div>
+
+          <div class="exploit-card" id="apiTest">
+            <div class="exploit-info">
+              <span class="exploit-name">API Security</span>
+              <span class="exploit-desc">Test REST/API endpoints</span>
+            </div>
+            <button class="exploit-btn" data-test="api">Test</button>
+          </div>
+
+          <div class="exploit-card" id="websocketTest">
+            <div class="exploit-info">
+              <span class="exploit-name">WebSocket Security</span>
+              <span class="exploit-desc">Test WebSocket vulnerabilities</span>
+            </div>
+            <button class="exploit-btn" data-test="websocket">Test</button>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>📄 Information Disclosure</h3>
+
+          <div class="exploit-card" id="infoLeakTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Sensitive Data Exposure</span>
+              <span class="exploit-desc">Test for data leakage</span>
+            </div>
+            <button class="exploit-btn" data-test="infoleak">Test</button>
+          </div>
+
+          <div class="exploit-card" id="errorTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Error Message Disclosure</span>
+              <span class="exploit-desc">Test for verbose errors</span>
+            </div>
+            <button class="exploit-btn" data-test="error">Test</button>
+          </div>
+
+          <div class="exploit-card" id="robotsTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Robots.txt Disclosure</span>
+              <span class="exploit-desc">Check for hidden paths</span>
+            </div>
+            <button class="exploit-btn" data-test="robots">Test</button>
+          </div>
+
+          <div class="exploit-card" id="sourceMapTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Source Map Exposure</span>
+              <span class="exploit-desc">Test for exposed source maps</span>
+            </div>
+            <button class="exploit-btn" data-test="sourcemap">Test</button>
+          </div>
+
+          <div class="exploit-card" id="gitTest">
+            <div class="exploit-info">
+              <span class="exploit-name">.git Directory Exposure</span>
+              <span class="exploit-desc">Test for exposed Git repos</span>
+            </div>
+            <button class="exploit-btn" data-test="git">Test</button>
+          </div>
+
+          <div class="exploit-card" id="envTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Environment File Exposure</span>
+              <span class="exploit-desc">Test for .env file access</span>
+            </div>
+            <button class="exploit-btn" data-test="env">Test</button>
+          </div>
+
+          <div class="exploit-card" id="backupTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Backup File Discovery</span>
+              <span class="exploit-desc">Test for exposed backups</span>
+            </div>
+            <button class="exploit-btn" data-test="backup">Test</button>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>🔄 Client-Side Security</h3>
+
+          <div class="exploit-card" id="domXssTest">
+            <div class="exploit-info">
+              <span class="exploit-name">DOM-based XSS</span>
+              <span class="exploit-desc">Test for DOM manipulation flaws</span>
+            </div>
+            <button class="exploit-btn" data-test="domxss">Test</button>
+          </div>
+
+          <div class="exploit-card" id="postmsgTest">
+            <div class="exploit-info">
+              <span class="exploit-name">postMessage Vulnerabilities</span>
+              <span class="exploit-desc">Test cross-origin messaging</span>
+            </div>
+            <button class="exploit-btn" data-test="postmsg">Test</button>
+          </div>
+
+          <div class="exploit-card" id="prototypeTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Prototype Pollution</span>
+              <span class="exploit-desc">Test for JS prototype attacks</span>
+            </div>
+            <button class="exploit-btn" data-test="prototype">Test</button>
+          </div>
+
+          <div class="exploit-card" id="localStorageTest">
+            <div class="exploit-info">
+              <span class="exploit-name">localStorage Secrets</span>
+              <span class="exploit-desc">Test for exposed sensitive data</span>
+            </div>
+            <button class="exploit-btn" data-test="localstorage">Test</button>
+          </div>
+
+          <div class="exploit-card" id="cacheTest">
+            <div class="exploit-info">
+              <span class="exploit-name">Cache Poisoning</span>
+              <span class="exploit-desc">Test for cache-based attacks</span>
+            </div>
+            <button class="exploit-btn" data-test="cache">Test</button>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>🔌 Port Exploits</h3>
+          <div id="portExploits" class="port-exploits-list">
+            <p class="exploit-hint">Run a port scan first to see available exploits</p>
+          </div>
+        </div>
+
+        <div class="exploit-section">
+          <h3>🛡️ Header Exploits</h3>
+          <div id="headerExploits" class="header-exploits-list">
+            <p class="exploit-hint">Run a header scan first to see vulnerabilities</p>
+          </div>
+        </div>
+
+        <div class="exploit-results" id="exploitResults">
+          <div class="results-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <p>Select a test to run</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ad Blocking Tab -->
+      <section id="ad-blocking" class="tab-panel">
+        <div class="shield-status" id="shieldStatus">
+          <div class="shield-icon" id="shieldIcon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="shield-text" id="shieldText">Protection Disabled</span>
+        </div>
+        
+        <div class="toggle-card main-toggle">
+          <div class="toggle-info">
+            <span class="toggle-title">Enable Protection</span>
+            <span class="toggle-desc">Block ads, trackers & malware</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="adBlockToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="filter-lists">
+          <h3>Filter Lists</h3>
+          
+          <div class="toggle-card">
+            <div class="toggle-info">
+              <span class="toggle-title">Ads & Trackers</span>
+              <span class="toggle-desc">EasyList + EasyPrivacy</span>
+            </div>
+            <label class="switch small">
+              <input type="checkbox" id="filterAds" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-card">
+            <div class="toggle-info">
+              <span class="toggle-title">Analytics & Metrics</span>
+              <span class="toggle-desc">Google Analytics, Hotjar, etc.</span>
+            </div>
+            <label class="switch small">
+              <input type="checkbox" id="filterAnalytics" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-card">
+            <div class="toggle-info">
+              <span class="toggle-title">Social Trackers</span>
+              <span class="toggle-desc">Facebook, Twitter pixels</span>
+            </div>
+            <label class="switch small">
+              <input type="checkbox" id="filterSocial" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-card">
+            <div class="toggle-info">
+              <span class="toggle-title">Annoyances</span>
+              <span class="toggle-desc">Cookie notices, popups</span>
+            </div>
+            <label class="switch small">
+              <input type="checkbox" id="filterAnnoyances" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-value" id="blockedCount">0</span>
+            <span class="stat-label">Blocked Today</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="totalBlocked">0</span>
+            <span class="stat-label">Total Blocked</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings Tab -->
+      <section id="settings" class="tab-panel">
+        <div class="setting-group">
+          <label class="setting-label">Appearance</label>
+          <div class="theme-selector">
+            <button class="theme-btn" data-theme="light">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+              Light
+            </button>
+            <button class="theme-btn active" data-theme="dark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+              Dark
+            </button>
+            <button class="theme-btn" data-theme="system">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+              System
+            </button>
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <label class="setting-label">Whitelist</label>
+          <textarea id="whitelist" class="setting-textarea" placeholder="Enter domains to whitelist (one per line)&#10;example.com&#10;trusted-site.org"></textarea>
+        </div>
+        
+        <button id="saveSettings" class="btn-primary">Save Settings</button>
+        
+        <div class="about">
+          <p>NetProbe v1.2.0</p>
+          <p class="about-sub">Security & Penetration Testing Tool</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
